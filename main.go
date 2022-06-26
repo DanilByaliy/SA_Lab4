@@ -1,22 +1,25 @@
 package main
 
 import (
+	"bufio"
+	"fmt"
 	engine "lab4/engine"
+	"os"
 )
 
 func main() {
-	loop := new(engine.Loop)
-
-	loop.Start()
-
-	//
-	loop.Post(engine.PrintCommand("hello"))
-	//
-	loop.Post(engine.PalindromCommand("hello"))
-	//
-	loop.Post(engine.PrintCommand("hello2"))
-
-	loop.AwaitFinish()
-
-	loop.Post(engine.PrintCommand("hello2"))
+	inputFile := "commands.txt"
+	eventLoop := new(engine.Loop)
+	eventLoop.Start()
+	if input, err := os.Open(inputFile); err == nil {
+   		defer input.Close()
+   		scanner := bufio.NewScanner(input)
+   		for scanner.Scan() {
+     			commandLine := scanner.Text()
+    			fmt.Println(commandLine)
+        		// cmd := parse(commandLine) // parse the line to get a Command 
+        		// eventLoop.Post(cmd)
+   		}
+	}
+	eventLoop.AwaitFinish()
 }

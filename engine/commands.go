@@ -2,6 +2,7 @@ package engine
 
 import (
 	"fmt"
+	"strings"
 )
 
 type Command interface {
@@ -20,8 +21,14 @@ func (pc PrintCommand) Execute(h Handler) {
 
 type PalindromCommand string
 
-func (mc PalindromCommand) Execute(h Handler) {
-	ap := ""
-	// TODO: implement the function
-	h.Post(PrintCommand(ap))
+func (pa PalindromCommand) Execute(h Handler) {
+	 s1 := strings.Split(string(pa), "")
+  	 s2 := make([]string, 0)
+  	 for i:=len(s1)-1; i>=0; i-- {
+    	 	s2 = append(s2, s1[i])
+  	 }
+  	 ap := strings.Join(s2, "")
+  	 ap = string(pa) + ap
+
+  	 h.Post(PrintCommand(ap))
 }
