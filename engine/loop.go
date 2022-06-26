@@ -18,6 +18,7 @@ func (cq *commandsQueue) push(c Command) {
 	defer cq.mu.Unlock()
 	cq.a = append(cq.a, c)
 	if cq.wait {
+		cq.wait = false
 		cq.notEmpty <-struct{}{}
 	}
 }
@@ -67,12 +68,16 @@ func (l *Loop) Start() {
 }
 
 func (l *Loop) Post(cmd Command) {
-	// TODO: що робити, коли команда додана після 
-	//       того як запит на зупинку було зроблено
+
+	// If the flag to stop processing tasks is true, 
+	// the command is not added to the queue, but the 
+	// corresponding information message is displayed.
+
 	if l.stop == true {
-		fmt.Println(cmd)
+		fmt.Println("Commands are no longer processed")
+	} else {
+		l.q.push(cmd)
 	}
-	l.q.push(cmd)
 }
 
 type CommandFunc func(h Handler)

@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	engine "lab4/engine"
 	"os"
 )
@@ -16,9 +15,8 @@ func main() {
    		scanner := bufio.NewScanner(input)
    		for scanner.Scan() {
      			commandLine := scanner.Text()
-    			fmt.Println(commandLine)
-        		// cmd := parse(commandLine) // parse the line to get a Command 
-        		// eventLoop.Post(cmd)
+        	cmd := engine.Parse(commandLine) // parse the line to get a Command 
+        	eventLoop.Post(cmd)
    		}
 	}
 	eventLoop.AwaitFinish()
